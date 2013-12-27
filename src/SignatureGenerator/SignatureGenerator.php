@@ -39,7 +39,7 @@ class SignatureGenerator {
 
         imagefill($image, 0, 0, $bg);
 
-        //Draw $header
+        //draw $header
         //image, font size, angle, x, y, colour, font, text
         $fontPath = Configuration::getFontPath();
         imagettftext($image, 32, 0, 32, 64, $fg, $fontPath, $lines[0]);
@@ -52,8 +52,9 @@ class SignatureGenerator {
 
         $offset += 37;
 
-        imagettftext($image, 10, 0, $offset, 38, $fg, $fontPath, $lines[1]);
-        imagettftext($image, 10, 0, $offset, 50, $fg, $fontPath, $lines[2]);
+        //draw other lines, with 12 pixels of space apart each time it is rendered (2px margin)
+        imagettftext($image, 10, 0, $offset, 40, $fg, $fontPath, $lines[1]);
+        imagettftext($image, 10, 0, $offset, 52, $fg, $fontPath, $lines[2]);
         imagettftext($image, 10, 0, $offset, 64, $fg, $fontPath, $lines[3]);
 
         //watermark
