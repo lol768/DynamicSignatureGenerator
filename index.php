@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <meta name="author" content="lol768">
-    <!-- If I was being paid this would look unique. Looks don't matter right now though, so bootstrap will do ;) -->
+    <!-- If I was being paid this would look unique. Looks don't matter right now though, so bootstrap will do ;) Sorry nkrecklow -->
 </head>
 <style type="text/css">
     .container {
