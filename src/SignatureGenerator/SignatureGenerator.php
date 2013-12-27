@@ -40,23 +40,23 @@ class SignatureGenerator {
         imagefill($image, 0, 0, $bg);
 
         //Draw $header
-        //image, font size, angle, x, y, colour, font, text
+        //Image, font size, angle, x, y, colour, font, text
         $fontPath = Configuration::getFontPath();
         imagettftext($image, 32, 0, 32, 64, $fg, $fontPath, $lines[0]);
 
-        //gets the x offset of the line and later, the bar
+        //Gets the x offset of the line and later, the bar
         $box = imagettfbbox(32, 0, $fontPath, $lines[0]);
         $offset = $box[4] + 64;
 
         imagefilledrectangle($image, $offset, 0, $offset + 5, 100, $fg);
 
         $offset += 37;
-
-        imagettftext($image, 10, 0, $offset, 38, $fg, $fontPath, $lines[1]);
-        imagettftext($image, 10, 0, $offset, 50, $fg, $fontPath, $lines[2]);
+        //Draw other lines, with 12 pixels of space apart each time it is rendered (2px margin)
+        imagettftext($image, 10, 0, $offset, 40, $fg, $fontPath, $lines[1]);
+        imagettftext($image, 10, 0, $offset, 52, $fg, $fontPath, $lines[2]);
         imagettftext($image, 10, 0, $offset, 64, $fg, $fontPath, $lines[3]);
 
-        //watermark
+        //Watermark
         $dimensions = imagettfbbox(Configuration::getWatermarkSize(), 0, $fontPath, Configuration::getWatermark());
         $textWidth = abs($dimensions[4] - $dimensions[0]) + Configuration::getWatermarkPaddingX();
 
