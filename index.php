@@ -1,3 +1,32 @@
+<?php
+use SignatureGenerator\Storage;
+
+require("bootstrap.php");
+function ife($var, $te=false) {
+    if ($var != null && !empty($var)) {
+        if ($te) {
+            echo $var;
+        } else {
+            echo ' value="' . $var . '" ';
+        }
+    } else {
+        return;
+    }
+}
+
+if (array_key_exists("load", $_GET)) {
+    $fn = $_GET['load'];
+    if (Storage::signatureExists($fn)) {
+        $data = getcwd() . DIRECTORY_SEPARATOR . "s" . DIRECTORY_SEPARATOR . $fn;
+        $data = file_get_contents($data);
+        $data = Storage::loadData($data);
+        $inpQuotes = implode("\n", $data->quotes);
+        $inpHeader = $data->header;
+        $inpSubHeader = $data->subheader;
+        $inpDetails = $data->details;
+    }
+}
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -7,22 +36,22 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <meta name="author" content="lol768">
     <!-- If I was being paid this would look unique. Looks don't matter right now though, so bootstrap will do ;) Sorry nkrecklow -->
-<style type="text/css">
-    .container {
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-
-    #load {
-        float: right;
-    }
-
-    @media(max-width: 700px) {
-        #thumb {
-            display: none;
+    <style type="text/css">
+        .container {
+            margin-left: 15px;
+            margin-right: 15px;
         }
-    }
-</style>
+
+        #load {
+            float: right;
+        }
+
+        @media (max-width: 700px) {
+            #thumb {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -39,7 +68,7 @@
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputHeader" name="header"
-                           placeholder="lol768 is awesome">
+                           placeholder="lol768 is awesome"<?php ife($inpHeader) ?>>
                 </div>
             </div>
             <div class="form-group">
@@ -47,7 +76,7 @@
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputSubheader" name="subheader"
-                           placeholder="lol768 is really awesome">
+                           placeholder="lol768 is really awesome"<?php ife($inpSubHeader) ?>>
                 </div>
             </div>
             <div class="form-group">
@@ -55,7 +84,7 @@
 
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="inputDetails"
-                           name="details" placeholder="lol768 is really really awesome">
+                           name="details" placeholder="lol768 is really really awesome"<?php ife($inpDetails) ?>>
                 </div>
             </div>
             <div class="form-group">
@@ -63,7 +92,7 @@
 
                 <div class="col-sm-10">
                     <textarea placeholder="One per line" name="quotes" id="inputQuotes" class="form-control"
-                              rows="5"></textarea>
+                              rows="5"><?php ife($inpQuotes, true) ?></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -72,16 +101,20 @@
                 </div>
             </div>
 
-        </form><div id="thumb">
-        <h2>Preview
-            <small><a href="#" id="refresh"><i class="glyphicon glyphicon-refresh"></i> refresh</a></small>
-        </h2>
+        </form>
+        <div id="thumb">
+            <h2>Preview
+                <small><a href="#" id="refresh"><i class="glyphicon glyphicon-refresh"></i> refresh</a></small>
+            </h2>
 
-        <a class="thumbnail" style="width: 700px;">
-            <img src="http://placehold.it/700x100&text=Fill+in+the+fields+for+a+preview" id="preview" style="width: 700px;">
-        </a></div>
+            <a class="thumbnail" style="width: 700px;">
+                <img src="http://placehold.it/700x100&text=Fill+in+the+fields+for+a+preview" id="preview"
+                     style="width: 700px;">
+            </a></div>
         <div id="link">
-            <h2>Your image link <small>click to select</small></h2>
+            <h2><a href="?load=1" id="permalink"><i class="glyphicon glyphicon-link"></i></a> Your image link
+                <small>click to select</small>
+            </h2>
             <input type="text" class="form-control" value="woo" id="linkBox" readonly>
         </div>
     </div>
@@ -107,6 +140,7 @@
                 $("#preview").attr("src", "preview.php?h=" + encodeURIComponent(header) + "&s=" + encodeURIComponent(subHeader) + "&d=" + encodeURIComponent(details) + "&q=" + encodeURIComponent(quote) + "&t=" + time);
             }
         }
+
         preview();
 
 
@@ -114,10 +148,11 @@
             var vals = $("form").serializeArray();
             $("#load").show();
 
-            $.post("save.php", vals, function(data) {
+            $.post("save.php", vals, function (data) {
                 $("#link").slideDown();
                 $("#load").fadeOut();
-
+                var linkArray = data.split("/");
+                $("#permalink").attr("href", "?load=" + linkArray[linkArray.length-1]);
                 $("#linkBox").val(data);
             });
         }
@@ -141,12 +176,12 @@
             preview();
         });
 
-        $("#linkBox").focus(function() {
+        $("#linkBox").focus(function () {
             var $this = $(this);
             $this.select();
 
             // Work around Chrome's little problem
-            $this.mouseup(function() {
+            $this.mouseup(function () {
                 // Prevent further mouseup intervention
                 $this.unbind("mouseup");
                 return false;

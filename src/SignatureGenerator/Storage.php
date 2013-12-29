@@ -21,6 +21,13 @@ class Storage {
         return json_decode($data);
     }
 
+    public static function signatureExists($url) {
+        if (!ctype_alnum($url)) {
+            return false;
+        }
+        return (file_exists(getcwd() . DIRECTORY_SEPARATOR . "s" . DIRECTORY_SEPARATOR . $url));
+    }
+
     public static function getNumFiles() {
         $dir = new DirectoryIterator(getcwd() . DIRECTORY_SEPARATOR . "s");
         $x = -1; //index
