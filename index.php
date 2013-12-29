@@ -100,7 +100,7 @@
             var subHeader = $("#inputSubheader").val();
             var details = $("#inputDetails").val();
             var quotes = $("#inputQuotes").val().split("\n");
-            if (header != "" && subHeader != "" && details != "" && quotes.length != 1) {
+            if (header != "" && subHeader != "" && details != "" && quotes.length > 0) {
                 var time = new Date().getTime();
                 //for now, we'll calculate the random quote clientside
                 var quote = quotes[getRandomInt(0, quotes.length - 1)];
