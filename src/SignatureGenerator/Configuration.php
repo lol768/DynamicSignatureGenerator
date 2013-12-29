@@ -44,6 +44,8 @@ class Configuration {
      * @return Color RGB color for the background.
      */
     public static function getRandomColor() {
+        //As per http://stackoverflow.com/a/10482105?, this will not work if your PHP ver is < 5.4
+        //If you find it fails, follow https://gist.github.com/lol768/70f314be0290cce03b17
         $color = self::getColors()[array_rand(self::getColors(), 1)];
         $color = new Color($color[0], $color[1], $color[2]);
         return $color;
