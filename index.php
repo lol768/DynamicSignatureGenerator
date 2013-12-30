@@ -5,9 +5,9 @@ require("bootstrap.php");
 function ife($var, $te=false) {
     if ($var != null && !empty($var)) {
         if ($te) {
-            echo $var;
+            echo htmlentities($var);
         } else {
-            echo ' value="' . $var . '" ';
+            echo ' value="' . htmlentities($var) . '" ';
         }
     } else {
         return;
